@@ -17,6 +17,7 @@ public class ReceptionService {
 
     public void createAnAppointment(Patient patient, Doctor doctor){
         appointmentRepository.appoint(new Appointment(patient, doctor, LocalDateTime.now()));
+        System.out.println("Appointed "+patient.getFirstName() + " " + patient.getLastName() + " to: " + doctor.getFirstName() + " " + doctor.getLastName());
     }
 
 }

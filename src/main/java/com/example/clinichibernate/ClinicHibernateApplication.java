@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class ClinicHibernateApplication {
@@ -39,32 +40,43 @@ public class ClinicHibernateApplication {
     @Autowired
     private ReceptionService receptionService;
 
+
+    private void prepare(){
+
+        Specialty surgeonSpecialty = new Specialty(Specialty.SpecialtyType.SURGEON);
+
+        Specialty dentistSpecialty = new Specialty(Specialty.SpecialtyType.DENTIST);
+
+        specialtyRepository.save(surgeonSpecialty);
+        specialtyRepository.save(dentistSpecialty);
+
+        Doctor surgeon = new Doctor("Pasha", "Volya", surgeonSpecialty);
+
+        Doctor dentist = new Doctor("Misha", "Ivanov", dentistSpecialty);
+
+        doctorRepository.save(surgeon);
+        doctorRepository.save(dentist);
+
+    }
+
+
     @PostConstruct
     private void solve() {
 
-        Specialty specialty = new Specialty(Specialty.SpecialtyType.SURGEON);
-
-        specialtyRepository.save(specialty);
-
-        Doctor doctor = new Doctor("Pasha", "Volya", specialty);
-
-        doctorRepository.save(doctor);
-
-        Doctor doctor1 = new Doctor("Pasha", "123", specialty);
-
-        doctorRepository.save(doctor1);
+        prepare();
 
         Patient patient = new Patient("I", "Ill");
 
         patientRepository.save(patient);
 
-        List<Doctor> pasha = doctorRepository.findByName("Pasha");
+        Optional<Doctor> doctor = doctorRepository.findByName("Misha").stream().findFirst();
 
-        System.out.println(pasha.get(1).getLastName());
+        if (doctor.isEmpty())
+            throw new RuntimeException("Can`t find doctor");
 
-        receptionService.createAnAppointment(patient, doctor);
+        receptionService.createAnAppointment(patient, doctor.get());
 
-        doctorService.observe(doctor);
+        doctorService.observe(doctor.get());
 
     }
 
