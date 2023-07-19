@@ -3,9 +3,9 @@ package com.example.clinichibernate.service;
 import com.example.clinichibernate.model.Doctor;
 import com.example.clinichibernate.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class DoctorService {
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.example.clinichibernate.repositories;
 
+import com.example.clinichibernate.repository.DoctorRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DatabaseDoctorRepository implements com.example.clinichibernate.repository.DoctorRepository {
+public class DatabaseDoctorRepository implements DoctorRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -27,14 +28,12 @@ public class DatabaseDoctorRepository implements com.example.clinichibernate.rep
         return Optional.ofNullable(entityManager.find(Doctor.class, id));
     }
 
+
     @Override
     @Transactional
     public List<Doctor> findByName(String name) {
-        String query = "SELECT id, first_name, last_name , specialty_id FROM doctor WHERE first_name LIKE :name OR last_name LIKE :name";
+        String query = "SELECT d FROM Doctor d WHERE d.firstName LIKE :name OR d.lastName LIKE :name";
 
-        Query nativeQuery = entityManager.createNativeQuery(query, Doctor.class);
-        nativeQuery.setParameter("name", "%"+name+"%");
-
-        return nativeQuery.getResultList();
+        return entityManager.createQuery(query, Doctor.class).setParameter("name", "%" + name + "%").getResultList();
     }
 }

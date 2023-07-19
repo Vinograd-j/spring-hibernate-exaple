@@ -1,6 +1,5 @@
 package com.example.clinichibernate.repository;
 
-
 import com.example.clinichibernate.model.Appointment;
 import com.example.clinichibernate.model.Doctor;
 import com.example.clinichibernate.model.Patient;

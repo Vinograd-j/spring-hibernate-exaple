@@ -1,6 +1,5 @@
 package com.example.clinichibernate.repository;
 
-
 import com.example.clinichibernate.model.Doctor;
 
 import java.util.List;

@@ -29,10 +29,11 @@ public class DatabasePatientRepository implements com.example.clinichibernate.re
         return Optional.ofNullable(entityManager.find(Patient.class, id));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Transactional
     public List<Patient> findByName(String name) {
-        String query = "SELECT id, first_name, last_name FROM patient WHERE first_name LIKE :name OR last_name LIKE :name";
+        String query = "SELECT p FROM Patient p WHERE p.firstName LIKE :name OR p.lastName LIKE :name";
 
         Query nativeQuery = entityManager.createNativeQuery(query, Doctor.class);
         nativeQuery.setParameter("name", "%"+name+"%");
